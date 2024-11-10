@@ -1,5 +1,7 @@
 const { connect } = require('mongoose');
+const dotenv = require('dotenv');
 
+dotenv.config();
 async function dbConnect() {
   let MONGO_URI = process.env.MONGO_URI;
 
