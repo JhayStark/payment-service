@@ -27,7 +27,7 @@ const initiateTransfer = async data => {
   return paystackInstance.post('/transfer', data);
 };
 
-const sentdOTP = async data => {
+const sendOTP = async data => {
   return paystackInstance.post('/charge/submit_otp', data);
 };
 
@@ -39,6 +39,6 @@ module.exports = {
   chargeUser,
   createTransferRecipient,
   initiateTransfer,
-  sentdOTP,
+  sendOTP,
   confirmPayment,
 };
