@@ -13,27 +13,24 @@ const paystackInstance = axios.create({
 });
 
 // Function to charge a user
-const chargeUser = async data => {
-  return paystackInstance.post('/charge', data);
-};
+const chargeUser = async data => paystackInstance.post('/charge', data);
 
 // Function to create a transfer recipient
-const createTransferRecipient = async data => {
-  return paystackInstance.post('/transferrecipient', data);
-};
+const createTransferRecipient = async data =>
+  paystackInstance.post('/transferrecipient', data);
 
 // Function to intiate transfer
-const initiateTransfer = async data => {
-  return paystackInstance.post('/transfer', data);
-};
+const initiateTransfer = async data => paystackInstance.post('/transfer', data);
 
-const sendOTP = async data => {
-  return paystackInstance.post('/charge/submit_otp', data);
-};
+const sendOTP = async data => paystackInstance.post('/charge/submit_otp', data);
 
-const confirmPayment = async reference => {
-  return paystackInstance.get(`/transaction/verify/${reference}`);
-};
+const confirmPayment = async reference =>
+  paystackInstance.get(`/transaction/verify/${reference}`);
+
+const confirmAccount = async data =>
+  paystackInstance.get(
+    `/bank/resolve?account_number=${data.accountNumber}&bank_code=${data.bankCode}`
+  );
 
 module.exports = {
   chargeUser,
@@ -41,4 +38,5 @@ module.exports = {
   initiateTransfer,
   sendOTP,
   confirmPayment,
+  confirmAccount,
 };

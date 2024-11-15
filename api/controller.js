@@ -4,6 +4,7 @@ const {
   initiateTransfer,
   sendOTP,
   confirmPayment,
+  confirmAccount,
 } = require('../paystack/service');
 const {
   createNewReceipt,
@@ -156,10 +157,25 @@ const webhook = async (req, res) => {
   }
 };
 
+const confirmAccountNumber = async (req, res) => {
+  try {
+    const { accountNumber, bankCode } = req.body;
+    const data = {
+      accountNumber,
+      bankCode,
+    };
+    const response = await confirmAccount(data);
+    res.status(200).json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   initiateMomoCharge,
   confirmOTP,
   initiateWithdrawal,
   confirmPaymentByReference,
   webhook,
+  confirmAccountNumber,
 };
