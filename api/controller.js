@@ -5,11 +5,16 @@ const {
   sendOTP,
   confirmPayment,
 } = require('../paystack/service');
-const { createNewReceipt, updateReceipt } = require('../receipts/service');
+const {
+  createNewReceipt,
+  updateReceipt,
+  getReceiptByReference,
+} = require('../receipts/service');
 const {
   createNewRecipient,
   getRecipientByAccountNumber,
 } = require('../recipient/service');
+const { getBackendServiceById } = require('../auth/service');
 
 const initiateMomoCharge = async (req, res) => {
   try {
@@ -22,7 +27,7 @@ const initiateMomoCharge = async (req, res) => {
     };
     const response = await chargeUser(data);
     const receipt = {
-      service: req.backendService.id,
+      service: req.backendService._id.toString(),
       reference: response.data.data.reference,
       amount,
       status: response.data.data.status,
@@ -32,7 +37,6 @@ const initiateMomoCharge = async (req, res) => {
     await createNewReceipt(receipt);
     res.status(200).json(response.data);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -60,7 +64,6 @@ const confirmPaymentByReference = async (req, res) => {
     });
     res.status(200).json(response.data);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -124,7 +127,31 @@ const initiateWithdrawal = async (req, res) => {
     await createNewReceipt(receipt);
     res.status(200).json(transferResponse.data);
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const webhook = async (req, res) => {
+  try {
+    const reference = req.body.data.reference;
+    const receipt = await getReceiptByReference(reference);
+    if (receipt) {
+      await updateReceipt(reference, {
+        status: req.body.data.status,
+      });
+      const backendService = await getBackendServiceById(receipt.service);
+      if (backendService.webhookUrl) {
+        await fetch(backendService.webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(req.body),
+        });
+      }
+    }
+    res.status(200).json({ message: 'success' });
+  } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
@@ -134,4 +161,5 @@ module.exports = {
   confirmOTP,
   initiateWithdrawal,
   confirmPaymentByReference,
+  webhook,
 };

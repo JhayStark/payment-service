@@ -1,4 +1,5 @@
 const { sign, verify } = require('jsonwebtoken');
+const CryptoJs = require('crypto-js');
 
 const createAccessToken = backendServiceId => {
   const token = sign(backendServiceId, process.env.JWT_SECRET, {
@@ -29,7 +30,19 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+const encrypt = text => {
+  return CryptoJs.AES.encrypt(text, process.env.CRYPTO_SECRET).toString();
+};
+
+const decrypt = text => {
+  return CryptoJs.AES.decrypt(text, process.env.CRYPTO_SECRET).toString(
+    CryptoJs.enc.Utf8
+  );
+};
+
 module.exports = {
   createAccessToken,
   verifyToken,
+  encrypt,
+  decrypt,
 };

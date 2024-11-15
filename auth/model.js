@@ -26,6 +26,10 @@ const backendService = new Schema(
       type: String,
       default: 'active',
     },
+    apiKey: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

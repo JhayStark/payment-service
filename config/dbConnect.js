@@ -8,6 +8,8 @@ async function dbConnect() {
   if (process.env.NODE_ENV !== 'production') {
     MONGO_URI = process.env.MONGO_URI_LOCAL;
   }
+
+  console.log(process.env.MONGO_URI, 'test');
   try {
     const connection = await connect(MONGO_URI);
     console.log(`Database Connected at ${connection.connection.host}`);
