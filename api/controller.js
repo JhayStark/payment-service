@@ -136,6 +136,7 @@ const webhook = async (req, res) => {
   try {
     const reference = req.body.data.reference;
     const receipt = await getReceiptByReference(reference);
+    res.status(200).send(200);
     if (receipt) {
       await updateReceipt(reference, {
         status: req.body.data.status,
@@ -151,7 +152,7 @@ const webhook = async (req, res) => {
         });
       }
     }
-    res.status(200).json({ message: 'success' });
+    return;
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
