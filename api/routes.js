@@ -5,6 +5,7 @@ const {
   confirmPaymentByReference,
   initiateWithdrawal,
   confirmAccountNumber,
+  getBanksData,
 } = require('./controller');
 
 PaymentRouter.post('/momo-pay', initiateMomoCharge);
@@ -12,5 +13,6 @@ PaymentRouter.post('/confirm-otp', confirmOTP);
 PaymentRouter.get('/confirm-payment', confirmPaymentByReference);
 PaymentRouter.post('/withdraw', initiateWithdrawal);
 PaymentRouter.post('/confirm-account', confirmAccountNumber);
+PaymentRouter.get('/banks', getBanksData);
 
 module.exports = PaymentRouter;

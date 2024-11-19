@@ -32,6 +32,8 @@ const confirmAccount = async data =>
     `/bank/resolve?account_number=${data.accountNumber}&bank_code=${data.bankCode}`
   );
 
+const getBanks = async () => paystackInstance.get('/bank?currency=GHS');
+
 module.exports = {
   chargeUser,
   createTransferRecipient,
@@ -39,4 +41,5 @@ module.exports = {
   sendOTP,
   confirmPayment,
   confirmAccount,
+  getBanks,
 };
