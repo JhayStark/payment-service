@@ -1,4 +1,4 @@
-const { addNewBackendService } = require('./service');
+const { addNewBackendService, updateBackendService } = require('./service');
 const bcrypt = require('bcryptjs');
 const SALT_ROUNDS = 10;
 
@@ -31,6 +31,17 @@ const addBackend = async (req, res) => {
   }
 };
 
+const updateBackendService = async (req, res) => {
+  try {
+    const id = req.backendService._id.toString();
+    await updateBackendService(id, req.body);
+    res.status(200).json({ message: 'Backend updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   addBackend,
+  updateBackendService,
 };
