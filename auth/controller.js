@@ -31,7 +31,7 @@ const addBackend = async (req, res) => {
   }
 };
 
-const updateBackendService = async (req, res) => {
+const updateBackendServices = async (req, res) => {
   try {
     const id = req.backendService._id.toString();
     await updateBackendService(id, req.body);
@@ -43,5 +43,5 @@ const updateBackendService = async (req, res) => {
 
 module.exports = {
   addBackend,
-  updateBackendService,
+  updateBackendServices,
 };

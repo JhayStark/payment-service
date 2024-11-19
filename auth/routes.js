@@ -1,8 +1,8 @@
 const authRouter = require('express').Router();
-const { addBackend, updateBackendService } = require('./controller');
+const { addBackend, updateBackendServices } = require('./controller');
 const { authenticateKey } = require('./middleware');
 
 authRouter.post('/add-backend', addBackend);
-authRouter.patch('/update-backend', authenticateKey, updateBackendService);
+authRouter.patch('/update-backend', authenticateKey, updateBackendServices);
 
 module.exports = authRouter;
