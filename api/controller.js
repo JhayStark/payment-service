@@ -135,6 +135,7 @@ const initiateWithdrawal = async (req, res) => {
 
 const webhook = async (req, res) => {
   try {
+    console.log(req.body);
     const reference = req.body.data.reference;
     const receipt = await getReceiptByReference(reference);
     res.status(200).send(200);
