@@ -39,7 +39,7 @@ const initiateMomoCharge = async (req, res) => {
     await createNewReceipt(receipt);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error });
   }
 };
 
@@ -53,7 +53,7 @@ const confirmOTP = async (req, res) => {
     const response = await sendOTP(data);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error });
   }
 };
 
@@ -66,7 +66,7 @@ const confirmPaymentByReference = async (req, res) => {
     });
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error });
   }
 };
 
@@ -128,7 +128,7 @@ const initiateWithdrawal = async (req, res) => {
     res.status(200).json(transferResponse.data);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error });
   }
 };
 
@@ -155,7 +155,7 @@ const webhook = async (req, res) => {
     }
     return;
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error });
   }
 };
 
@@ -169,7 +169,7 @@ const confirmAccountNumber = async (req, res) => {
     const response = await confirmAccount(data);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error });
   }
 };
 
@@ -178,7 +178,7 @@ const getBanksData = async (req, res) => {
     const response = await getBanks();
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error });
   }
 };
 
