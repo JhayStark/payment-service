@@ -39,7 +39,7 @@ const initiateMomoCharge = async (req, res) => {
     await createNewReceipt(receipt);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.data });
+    res.status(500).json({ error: error.message, data: error?.response?.data });
   }
 };
 
@@ -53,7 +53,7 @@ const confirmOTP = async (req, res) => {
     const response = await sendOTP(data);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.data });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -66,7 +66,7 @@ const confirmPaymentByReference = async (req, res) => {
     });
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.data });
+    res.status(500).json({ error: error.message, data: error?.response?.data });
   }
 };
 
@@ -129,7 +129,7 @@ const initiateWithdrawal = async (req, res) => {
     res.status(200).json(transferResponse.data);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.data });
+    res.status(500).json({ error: error.message, data: error?.response?.data });
   }
 };
 
@@ -156,7 +156,7 @@ const webhook = async (req, res) => {
     }
     return;
   } catch (error) {
-    res.status(500).json({ error: error.data });
+    res.status(500).json({ error: error.message, data: error?.response?.data });
   }
 };
 
@@ -170,7 +170,7 @@ const confirmAccountNumber = async (req, res) => {
     const response = await confirmAccount(data);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.data });
+    res.status(500).json({ error: error.message, data: error?.response?.data });
   }
 };
 
@@ -179,7 +179,7 @@ const getBanksData = async (req, res) => {
     const response = await getBanks();
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error: error.data });
+    res.status(500).json({ error: error.message, data: error?.response?.data });
   }
 };
 
