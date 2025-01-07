@@ -39,7 +39,7 @@ const initiateMomoCharge = async (req, res) => {
     await createNewReceipt(receipt);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.data });
   }
 };
 
@@ -53,7 +53,7 @@ const confirmOTP = async (req, res) => {
     const response = await sendOTP(data);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.data });
   }
 };
 
@@ -66,7 +66,7 @@ const confirmPaymentByReference = async (req, res) => {
     });
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.data });
   }
 };
 
@@ -93,6 +93,7 @@ const initiateWithdrawal = async (req, res) => {
     const existingRecipient = await getRecipientByAccountNumber(account_number);
     if (!existingRecipient) {
       const response = await createTransferRecipient(data);
+      // console.log(response.data);
       recipient = {
         recipientCode: response.data.data.recipient_code,
         name,
@@ -128,7 +129,7 @@ const initiateWithdrawal = async (req, res) => {
     res.status(200).json(transferResponse.data);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.data });
   }
 };
 
@@ -155,7 +156,7 @@ const webhook = async (req, res) => {
     }
     return;
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.data });
   }
 };
 
@@ -169,7 +170,7 @@ const confirmAccountNumber = async (req, res) => {
     const response = await confirmAccount(data);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.data });
   }
 };
 
@@ -178,7 +179,7 @@ const getBanksData = async (req, res) => {
     const response = await getBanks();
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.data });
   }
 };
 
