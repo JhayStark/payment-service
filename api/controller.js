@@ -91,10 +91,8 @@ const initiateWithdrawal = async (req, res) => {
     };
     let recipient = {};
     const existingRecipient = await getRecipientByAccountNumber(account_number);
-    console.log(existingRecipient);
     if (!existingRecipient) {
       const response = await createTransferRecipient(data);
-      console.log(response.data);
       recipient = {
         recipientCode: response.data.data.recipient_code,
         name,
@@ -129,6 +127,7 @@ const initiateWithdrawal = async (req, res) => {
     await createNewReceipt(receipt);
     res.status(200).json(transferResponse.data);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
