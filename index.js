@@ -7,7 +7,7 @@ const PaymentRouter = require('./api/routes');
 const authRouter = require('./auth/routes');
 const { verifyToken } = require('./config/jwt');
 const { authenticateKey } = require('./auth/middleware');
-const { webhook } = require('./api/controller');
+const { webhook, callbackController } = require('./api/controller');
 
 dotenv.config();
 const app = express();
@@ -19,6 +19,7 @@ app.use(express.json());
 const port = process.env.PORT || 5000;
 
 app.use('/webhook', webhook);
+app.use('/callback', callbackController);
 app.use('/api/v1/auth', authRouter);
 
 app.use('/api/v1/payment', authenticateKey, PaymentRouter);

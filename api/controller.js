@@ -128,17 +128,15 @@ const initiateWithdrawal = async (req, res) => {
     await createNewReceipt(receipt);
     res.status(200).json(transferResponse.data);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error.message, data: error?.response?.data });
   }
 };
 
 const webhook = async (req, res) => {
   try {
-    console.log(req.body);
     const reference = req.body.data.reference;
     const receipt = await getReceiptByReference(reference);
-    res.status(200).send(200);
+    res.sendStatus(200);
     if (receipt) {
       await updateReceipt(reference, {
         status: req.body.data.status,
@@ -152,6 +150,39 @@ const webhook = async (req, res) => {
           },
           body: JSON.stringify(req.body),
         });
+      }
+    }
+    return;
+  } catch (error) {
+    res.status(500).json({ error: error.message, data: error?.response?.data });
+  }
+};
+
+const callbackController = async (req, res) => {
+  try {
+    const reference = req.body.data.reference;
+    const receipt = await getReceiptByReference(reference);
+    res.sendStatus(200);
+    if (receipt) {
+      await updateReceipt(reference, {
+        status: req.body.data.status,
+      });
+      const backendService = await getBackendServiceById(receipt.service);
+      if (backendService.callbackUrl) {
+        const callbackResponse = await fetch(backendService.callbackUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(req.body),
+        });
+
+        if (!callbackResponse.ok) {
+          console.error(
+            `Callback failed with status ${callbackResponse.status}:`,
+            await callbackResponse.text()
+          );
+        }
       }
     }
     return;
@@ -191,4 +222,5 @@ module.exports = {
   webhook,
   confirmAccountNumber,
   getBanksData,
+  callbackController,
 };
