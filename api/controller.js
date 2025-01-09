@@ -118,7 +118,7 @@ const initiateWithdrawal = async (req, res) => {
 
     const transferResponse = await initiateTransfer(transferData);
     const receipt = {
-      service: req.backendService.id,
+      service: req.backendService._id.toString(),
       reference: transferData.reference,
       amount,
       status: transferResponse.data.data.status,
