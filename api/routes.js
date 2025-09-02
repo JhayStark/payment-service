@@ -6,6 +6,7 @@ const {
   initiateWithdrawal,
   confirmAccountNumber,
   getBanksData,
+  getCheckoutUrl,
 } = require("./controller");
 
 PaymentRouter.post("/momo-pay", initiateMomoCharge);
