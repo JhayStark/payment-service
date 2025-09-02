@@ -6,17 +6,17 @@ const {
   confirmPayment,
   confirmAccount,
   getBanks,
-} = require('../paystack/service');
+} = require("../paystack/service");
 const {
   createNewReceipt,
   updateReceipt,
   getReceiptByReference,
-} = require('../receipts/service');
+} = require("../receipts/service");
 const {
   createNewRecipient,
   getRecipientByAccountNumber,
-} = require('../recipient/service');
-const { getBackendServiceById } = require('../auth/service');
+} = require("../recipient/service");
+const { getBackendServiceById } = require("../auth/service");
 
 const initiateMomoCharge = async (req, res) => {
   try {
@@ -34,7 +34,7 @@ const initiateMomoCharge = async (req, res) => {
       amount,
       status: response.data.data.status,
       accountCharged: mobile_money.phone,
-      transactionType: 'momo-pay',
+      transactionType: "momo-pay",
     };
     await createNewReceipt(receipt);
     res.status(200).json(response.data);
@@ -106,10 +106,10 @@ const initiateWithdrawal = async (req, res) => {
       recipient = existingRecipient;
     }
     if (!recipient.recipientCode) {
-      return res.status(400).json({ error: 'Failed to create recipient' });
+      return res.status(400).json({ error: "Failed to create recipient" });
     }
     const transferData = {
-      source: 'balance',
+      source: "balance",
       amount,
       recipient: recipient.recipientCode,
       reason,
@@ -144,9 +144,9 @@ const webhook = async (req, res) => {
       const backendService = await getBackendServiceById(receipt.service);
       if (backendService.webhookUrl) {
         await fetch(backendService.webhookUrl, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(req.body),
         });
@@ -170,9 +170,9 @@ const callbackController = async (req, res) => {
       const backendService = await getBackendServiceById(receipt.service);
       if (backendService.callbackUrl) {
         const callbackResponse = await fetch(backendService.callbackUrl, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(req.body),
         });
@@ -215,10 +215,20 @@ const getBanksData = async (req, res) => {
   }
 };
 
+const getCheckoutUrl = async (req, res) => {
+  try {
+    const response = await generateCheckoutUrl(req.body);
+    res.status(200).json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error.message, data: error?.response?.data });
+  }
+};
+
 module.exports = {
   initiateMomoCharge,
   confirmOTP,
   initiateWithdrawal,
+  getCheckoutUrl,
   confirmPaymentByReference,
   webhook,
   confirmAccountNumber,
